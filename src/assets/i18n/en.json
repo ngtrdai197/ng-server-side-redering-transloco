@@ -1,0 +1,5 @@
+{
+  "hello": "Hello {{name}}",
+  "hi": "Hello",
+  "tryMyBest": "I will try my best"
+}
