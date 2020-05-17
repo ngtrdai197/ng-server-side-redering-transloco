@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+import { takeUntil, switchMap } from 'rxjs/operators'
+import { of } from 'rxjs'
+
 import { BaseComponent } from '@shared/base-component/base.component'
 import { SeoSocialService } from '@core/services/seo-social.service'
+import { ISeoSocial } from '@core/interfaces/seo.interface'
+import { HttpClient } from '@angular/common/http'
+import { AuthService } from '@core/services'
 
 @Component({
   selector: 'app-home',
@@ -9,23 +16,52 @@ import { SeoSocialService } from '@core/services/seo-social.service'
 })
 export class HomeComponent extends BaseComponent implements OnInit {
   public name = 'Nguyễn Đại'
-  private data = {
-    name: this.name,
-    description: 'Researching for coding',
-    image:
-      // tslint:disable-next-line:max-line-length
-      'https://scontent.fsgn5-4.fna.fbcdn.net/v/t1.0-9/28685295_974675742680428_6536081104377623789_n.jpg?_nc_cat=102&_nc_sid=7aed08&_nc_oc=AQlPM26-njesg4q8pB-E079FQOLZfowCQGzpwgNZSXAafZG7g3PhHSrTo4viiYhuf2U&_nc_ht=scontent.fsgn5-4.fna&oh=64f65bffdf74858cbc4e118445d923bd&oe=5EC2AD96',
-  }
-  constructor(private readonly seoSocialService: SeoSocialService) {
+  isAuthGithub = false
+  constructor(
+    private readonly seoSocialService: SeoSocialService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly httpClient: HttpClient,
+    private readonly authService: AuthService,
+  ) {
     super()
   }
 
   ngOnInit() {
-    this.seoSocialService.setData({
-      title: this.data.name,
-      description: this.data.description,
-      imageUrl: this.data.image,
-      url: '/home',
-    })
+    this.setMetaTags()
+    const accessToken = localStorage.getItem('accessToken')
+    if (accessToken) {
+      this.authService.me().subscribe((me) => console.log('me', me))
+    }
+  }
+
+  onLoginWithGithub() {
+    const url =
+      'https://github.com/login/oauth/authorize?client_id=8c778b22dac009f5ae4d'
+    const name = 'Github Login'
+    const specs = 'width=500,height=500'
+  }
+
+  logoutGithub() {
+    this.httpClient
+      .get(`http://localhost:3000/auth/github/logout`)
+      .subscribe((res) => console.log('res', res))
+  }
+
+  private setMetaTags() {
+    this.activatedRoute.data
+      .pipe(
+        takeUntil(this.ngDestroyed$),
+        switchMap((data: ISeoSocial) => {
+          const { title, url, description, imageUrl } = data
+          this.seoSocialService.setData({
+            title,
+            url,
+            description,
+            imageUrl,
+          })
+          return of()
+        }),
+      )
+      .subscribe()
   }
 }

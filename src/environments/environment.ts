@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  baseUrl: 'http://localhost:4000',
+  baseUrl: 'http://localhost:4200',
   production: false,
   APP_ID: 'ng-ssr-transloco',
-};
+}
 
 /*
  * For easier debugging in development mode, you can import the following file

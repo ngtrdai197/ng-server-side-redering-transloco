@@ -1,6 +1,7 @@
 export interface ISeoSocial {
-  readonly title: string
-  readonly imageUrl: string
-  readonly description: string
-  readonly url: string
+  title: string
+  imageUrl: string
+  description: string
+  url: string
+  [name: string]: any
 }
