@@ -10,9 +10,10 @@
     "e2e": "ng e2e",
     "dev:ssr": "ng run ng-ssr-transloco:serve-ssr",
     "serve:ssr": "node dist/ng-ssr-transloco/server/main.js",
-    "build:ssr": "ng build --prod && ng run ng-ssr-transloco:server:production",
+    "build:prod": "ng build --configuration=production && ng run ng-ssr-transloco:server --configuration=production",
+    "build:staging": "ng build --configuration=staging && ng run ng-ssr-transloco:server --configuration=staging",
     "prerender": "ng run ng-ssr-transloco:prerender",
-    "postinstall": "npm run build:ssr"
+    "postinstall": "npm run build:prod"
   },
   "private": true,
   "dependencies": {
