@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { takeUntil, switchMap } from 'rxjs/operators'
 import { of } from 'rxjs'
@@ -8,7 +8,6 @@ import { SeoSocialService } from '@core/services/seo-social.service'
 import { ISeoSocial } from '@core/interfaces/seo.interface'
 import { HttpClient } from '@angular/common/http'
 import { AuthService } from '@core/services'
-import { LOCAL_STORAGE } from '@/tokens/localstorage.token'
 
 @Component({
   selector: 'app-home',
@@ -16,21 +15,21 @@ import { LOCAL_STORAGE } from '@/tokens/localstorage.token'
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent extends BaseComponent implements OnInit {
-  public name = 'Nguyễn Đại'
+  public name = localStorage.getItem('name')
   isAuthGithub = false
   constructor(
     private readonly seoSocialService: SeoSocialService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly httpClient: HttpClient,
     private readonly authService: AuthService,
-    @Inject(LOCAL_STORAGE) private localStorage: Storage
   ) {
     super()
+    localStorage.setItem('name', 'Nguyễn Đại')
   }
 
   ngOnInit() {
     this.setMetaTags()
-    const accessToken = this.localStorage.getItem('accessToken')
+    const accessToken = localStorage.getItem('accessToken')
     if (accessToken) {
       this.authService.me().subscribe((me) => console.log('me', me))
     }
