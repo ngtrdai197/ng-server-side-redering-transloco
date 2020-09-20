@@ -13,8 +13,7 @@
     "remove-dist": "rm -rf /dist",
     "build:prod": "ng build --configuration=production && ng run ng-ssr-transloco:server --configuration=production",
     "build:staging": "npm run remove-dist -y && ng build --outputPath=./dist/browser --configuration=staging && ng run ng-ssr-transloco:server --outputPath=./dist/server --configuration=staging",
-    "prerender": "ng run ng-ssr-transloco:prerender",
-    "postinstall": "npm run build:prod"
+    "prerender": "ng run ng-ssr-transloco:prerender"
   },
   "private": true,
   "dependencies": {
